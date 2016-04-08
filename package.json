@@ -2,9 +2,9 @@
   "name": "cobalt-slack",
   "version": "0.0.1",
   "description": "This is a Cobalt adapter to use with Slack.",
-  "main": "index.js",
+  "main": "index.coffee",
   "scripts": {
-    "start": "node index.js",
+    "start": "coffee index.coffee",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,6 +22,9 @@
   },
   "homepage": "https://github.com/DoSomething/cobalt-slack#readme",
   "dependencies": {
-    "express": "^4.13.4"
+    "body-parser": "^1.15.0",
+    "coffee-script": "^1.10.0",
+    "express": "^4.13.4",
+    "multer": "^1.1.0"
   }
 }
