@@ -23,15 +23,18 @@ app.get '/', (req, res) ->
 app.post '/', (req, res) ->
   # Validate input.
   unless req.body?.data?
-    res.status(500).send('No data in payload.')
+    console.error 'No data in payload.'
+    res.status(500).end()
     return
 
   unless req.body.request?.shared_secret?
-    res.status(500).send('No request payload.')
+    console.error 'No request payload.'
+    res.status(500).end()
     return
 
   unless req.body.request.shared_secret == config.COBALT_SECRET
-    res.status(500).send('Wrong secret token.')
+    console.error 'Wrong secret token.'
+    res.status(500).end()
     return
 
   # Log body.
