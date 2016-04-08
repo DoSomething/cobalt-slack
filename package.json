@@ -1,0 +1,23 @@
+{
+  "name": "cobalt-slack",
+  "version": "0.0.1",
+  "description": "This is a Cobalt adapter to use with Slack.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DoSomething/cobalt-slack.git"
+  },
+  "keywords": [
+    "cobalt",
+    "slack"
+  ],
+  "author": "Sergii Tkachenko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DoSomething/cobalt-slack/issues"
+  },
+  "homepage": "https://github.com/DoSomething/cobalt-slack#readme"
+}
