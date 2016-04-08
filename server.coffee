@@ -1,4 +1,4 @@
-# Expres settings.
+# Express settings.
 express = require('express')
 app = express()
 app.set 'port', process.env.PORT or 3000
@@ -35,14 +35,13 @@ app.post '/', (req, res) ->
     return
 
   # Log body.
-  # data = req.body.data
-  console.log "Data recieved:"
-  console.log req.body
+  console.log "Data received: %j", req.body
 
+  # data = req.body.data
   res.send '200, Duh!'
   return
 
 # Start server.
 app.listen app.get('port'), ->
-  console.log 'Node app is running on port', app.get('port')
+  console.log 'Cobalt to Slack adapter is running on port', app.get('port')
   return
