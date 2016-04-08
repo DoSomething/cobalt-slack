@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/DoSomething/cobalt-slack/issues"
   },
-  "homepage": "https://github.com/DoSomething/cobalt-slack#readme"
+  "homepage": "https://github.com/DoSomething/cobalt-slack#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
 }
