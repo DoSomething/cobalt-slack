@@ -1,7 +1,8 @@
-# Express settings.
 express = require 'express'
 request = require 'superagent'
+pluralize = require 'pluralize'
 
+# Express settings.
 app = express()
 app.set 'port', process.env.PORT or 3000
 
@@ -70,7 +71,8 @@ app.post '/', (req, res) ->
     else
       "warning"
 
-    copy_full += "\nYou have #{pending_count} pending evaluations in total."
+    copy_verb = pluralize 'evaluation', pending_count
+    copy_full += "\nYou have #{pending_count} pending #{copy_verb} in total."
   else
     copy_color = "good"
     copy_full += "\nNice job! You don't have any open reports!"
