@@ -1,6 +1,7 @@
 express = require 'express'
-request = require 'superagent'
+superagent = require 'superagent'
 pluralize = require 'pluralize'
+humanizeDuration = require 'humanize-duration'
 
 # Express settings.
 app = express()
@@ -50,7 +51,8 @@ app.post '/', (req, res) ->
   copy_project = "#{project_name} bounty program"
 
   # Fallback.
-  copy_short = switch report.request.event
+  event = report.request.event
+  copy_short = switch event
     when "vulnerability.new_state"
       project_url += '/reports'
       "New vulnerability has been reported."
@@ -58,39 +60,55 @@ app.post '/', (req, res) ->
       project_url += '/reports?sort=newest&state=rewarded'
       "A vulnerability report has been rewarded."
     else
-      err = "Unknown event: #{report.request.event}"
+      err = "Unknown event: #{event}"
       console.error err
       console.log "Data dump: %j", report
       err
 
-  # Text.
-  copy_full = copy_short
+  # Stats.
   pending_count = report.data.attributes['awaiting-vulnerabilities-count']
-  if pending_count > 0
+  art = report.data.attributes["average-response-time"] * 1000
+  art_copy = humanizeDuration art,
+    round: true
+    units: ['d', 'h']
+    delimiter: ' '
 
-    copy_color = if report.request.event isnt "vulnerability.valid_state"
-      "danger"
-    else
-      "warning"
+  # Color.
+  copy_color = switch
+    when pending_count > 0 and event isnt "vulnerability.valid_state" then "danger"
+    when pending_count > 0 then "warning"
+    else "good"
 
-    copy_verb = pluralize 'evaluation', pending_count
-    copy_full += "\nYou have #{pending_count} pending #{copy_verb} in total."
-  else
-    copy_color = "good"
-    copy_full += "\nNice job! You don't have any open reports!"
-
-  # Post to Slack.
-  request
-  .post config.SLACK_INCOMING_HOOK
-  .send
+  # Prepare the payload.
+  msg =
     attachments: [
       fallback: copy_short
       title: copy_project
       title_link: project_url
       color: copy_color
-      text: copy_full
+      text: copy_short
+      fields: [
+        {
+          title: "Open #{pluralize 'report', pending_count}"
+          value: pending_count
+          short: true
+        },
+        {
+          title: "Averege response time"
+          value: art_copy
+          short: true
+        },
+      ]
     ]
+
+  # Post to Slack.
+  superagent
+  .post config.SLACK_INCOMING_HOOK
+  .send msg
   .end (err, res) -> console.log err if err
+
+  # Debug:
+  # console.log JSON.stringify(msg, null, 2);
 
   res.send 'ok'
   return

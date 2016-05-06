@@ -25,6 +25,7 @@
     "body-parser": "^1.15.0",
     "coffee-script": "^1.10.0",
     "express": "^4.13.4",
+    "humanize-duration": "^3.7.1",
     "multer": "^1.1.0",
     "pluralize": "^1.2.1",
     "superagent": "^1.8.3"
