@@ -52,8 +52,10 @@ app.post '/', (req, res) ->
   # Fallback.
   copy_short = switch report.request.event
     when "vulnerability.new_state"
+      project_url += '/reports'
       "New vulnerability has been reported."
     when "vulnerability.valid_state"
+      project_url += '/reports?sort=newest&state=rewarded'
       "A vulnerability report has been rewarded."
     else
       err = "Unknown event: #{report.request.event}"
